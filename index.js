@@ -1,75 +1,41 @@
 const url = 'http://www.omdbapi.com/'
 const apiKey = 'ad44b802'
 
-const fetchData = async (searchTerm) => {
-    const response = await axios.get(url, {
-        params: {
-            apikey: apiKey,
-            s: searchTerm
 
-        }
-    });
-    // const data = response.data
-    
-    if (response.data.Error) {
-        return []
-    }
-
-    return response.data.Search
-    
-}
-
-const root = document.querySelector('.autocomplete')
-root.innerHTML = `
-<label><b>Search for a Movie</b></label>
-<input class="input" />
-<div class="dropdown">
-    <div class="dropdown-menu">
-        <div class="dropdown-content results"></div>
-    </div>
-</div>
-`
-
-const input = document.querySelector('input')
-const dropdown = document.querySelector('.dropdown')
-const resultsWrapper = document.querySelector('.results')
-
-
-const onInput = async event => {
-    const movies =  await fetchData(event.target.value)
-
-    if (!movies.length) {
-        dropdown.classList.remove('is-active')
-        return
-    }
-    
-    resultsWrapper.innerHTML = ''
-    dropdown.classList.add('is-active')
-    for (let movie of movies) {
-        const option = document.createElement('a')
+createAutoCompete({
+    root: document.querySelector('.autocomplete'),
+    renderOption(movie) {
         const imgSrc = movie.Poster === 'N/A' ? '' : movie.Poster
-
-        option.classList.add('dropdown-item')
-        option.innerHTML = `
+        return `
             <img src="${imgSrc}" />
-            ${movie.Title}
+            ${movie.Title} (${movie.Year})
         `
-        option.addEventListener('click', () => {
-            input.value = movie.Title
-            dropdown.classList.remove('is-active')
-            onMovieSelect(movie)
-        })
-        resultsWrapper.appendChild(option)
-    }
-}
-
-input.addEventListener('input', debounce(onInput, 500))
-
-document.addEventListener("click", event => {
-    if (!root.contains(event.target)) {
-        dropdown.classList.remove('is-active')
+    },
+    onOptionSelect(movie){
+        onMovieSelect(movie);
+    },
+    inputValue(movie){
+        return movie.Title
+    },
+    async fetchData(searchTerm) {
+        const response = await axios.get(url, {
+            params: {
+                apikey: apiKey,
+                s: searchTerm
+    
+            }
+        });
+        // const data = response.data
+        
+        if (response.data.Error) {
+            return []
+        }
+    
+        return response.data.Search
+        
     }
 })
+
 
 const onMovieSelect = async (movie) => {
     const response = await axios.get(url, {
