@@ -1,4 +1,4 @@
-const url = 'http://www.omdbapi.com/'
+const url = 'https://www.omdbapi.com/'
 const apiKey = 'ad44b802'
 
 
