@@ -1,12 +1,12 @@
 // const root = document.querySelector('.autocomplete')
 
-const createAutoCompete = ({ 
-    root, 
-    renderOption, 
-    onOptionSelect, 
-    inputValue, 
-    fetchData 
-}) => {    
+const createAutoCompete = ({
+    root,
+    renderOption,
+    onOptionSelect,
+    inputValue,
+    fetchData
+}) => {
     root.innerHTML = `
     <label><b>Search</b></label>
     <input class="input" />
