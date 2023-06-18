@@ -1,6 +1,5 @@
 const url = 'https://www.omdbapi.com/'
-const apiKey = ${{secrets.apiKey}}
-
+const apiKey = 'ad44b802'
 
 const autoCompleteConfig = {
     renderOption(movie) {
