@@ -1,5 +1,5 @@
 const url = 'https://www.omdbapi.com/'
-const apiKey = 'ad44b802'
+const apiKey = ${{secrets.apiKey}}
 
 
 const autoCompleteConfig = {
